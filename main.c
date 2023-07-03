@@ -237,5 +237,28 @@ void excluirNo() {
     free(temp);
     printf("No excluído com sucesso\n");
 }
+void listarDados() {
+    Nos* bufferNo = noInicial;
+    int contador = 1;
+
+    if (bufferNo == NULL) {
+        printf("A lista está vazia\n");
+        return;
+    } else {
+
+        while (bufferNo != NULL) {
+            printf("-----------No %d-----------\n", contador);
+            printf("ID: %d \n", bufferNo->ID);
+            printf("Nome: %s\n", bufferNo->nome);
+            printf("Email: %s\n", bufferNo->email);
+            printf("Sexo: %s\n", bufferNo->sexo);
+            printf("Endereco: %s\n", bufferNo->endereco);
+            printf("Altura: %.2f\n", bufferNo->altura);
+            printf("Status de vacinacao: %d\n", bufferNo->vacinado);
+            contador++;
+            bufferNo = bufferNo->Prox;
+        }
+    }
+}
 
 
