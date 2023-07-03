@@ -32,10 +32,10 @@ int main() {
 
     do {
         printf("-----------------------------------------\n");
-        printf("1 - Criar/Adicionar Nos a lista\n");
-        printf("2 - Editar dados do No\n");
-        printf("3 - Excluir No\n");
-        printf("4 - Listar dados da Lista\n");
+        printf("1 - Adcionar usuario\n");
+        printf("2 - Editar usuario\n");
+        printf("3 - Excluir usuario\n");
+        printf("4 - Lista de usuarios\n");
         printf("0 - Sair do algoritmo\n");
         printf("Digite a opcao: ");
         scanf("%d", &opcao);
@@ -70,8 +70,8 @@ void adicionarNo() {
     char nomeNo[100], emailNo[100], sexoNo[20], enderecoNo[100];
     double alturaNo;
 
-    printf("Digite os dados do no na linha abaixo\n");
-    printf("Digite o seu nome completo: ");
+    printf("Digite os dados do usuario na linha abaixo\n");
+    printf("\n\nDigite o seu nome completo: ");
     scanf(" %[^\n]", nomeNo);
     printf("Digite o seu email: ");
     scanf(" %[^\n]", emailNo);
@@ -91,7 +91,7 @@ void adicionarNo() {
         sexoNo[0] = toupper(sexoNo[0]);
     }
 
-    printf("Digite o endereço atual: ");
+    printf("Digite o endereco atual: ");
     scanf(" %[^\n]", enderecoNo);
     printf("Digite a altura (Entre 1.0 e 2.0): ");
     scanf("%lf", &alturaNo);
@@ -118,147 +118,204 @@ void adicionarNo() {
     novoNo->vacinado = noVacinado;
     novoNo->Prox = NULL;
 
-    if (contadorNos == 0) {
+    if (noInicial == NULL) {
         noInicial = novoNo;
         bufferNo = noInicial;
-        contadorNos = 1;
-        printf("No inicial criado com criado com sucesso\n");
     } else {
         bufferNo->Prox = novoNo;
-        bufferNo = bufferNo->Prox;
-        contadorNos++;
-        printf("Novo no adicionado a lista de nos com sucesso\n");
+        bufferNo = novoNo;
     }
+
+    contadorNos++;
 }
+
 void editarNo() {
-    char email[100];
-    int encontrado = 0;
-    Nos* bufferNo = noInicial;
+    int noID, atributo;
+    Nos* noAtual = noInicial;
+    char novoNome[100], novoEmail[100], novoSexo[20], novoEndereco[100];
+    double novaAltura;
+    int novoVacinado;
 
-    while (encontrado != 1) {
-        printf("Digite o email do no que deseja editar: ");
-        scanf(" %[^\n]", email);
-        if (bufferNo == NULL) {
-            printf("A lista esta vazia\n");
-            return;
-        } else if (strcmp(bufferNo->email, email) == 0) {
-            int opcao;
-            encontrado = 1;
-            do {
-                printf("1 - Editar seu nome\n");
-                printf("2 - Editar seu sexo\n");
-                printf("3 - Editar seu endereco\n");
-                printf("4 - Editar sua altura\n");
-                printf("5 - Editar status de vacinacao\n");
-                printf("0 - Fechar a edicao\n");
-                printf("Opcao escolhida: ");
-                scanf("%d", &opcao);
 
-                switch (opcao) {
-                    case 1:
-                        printf("Digite o novo nome desejado: ");
-                        scanf(" %[^\n]", bufferNo->nome);
-                        break;
-                    case 2:
-                        char sexo[20];
-                        printf("Digite o novo sexo desejado: ");
-                        scanf(" %[^\n]", sexo);
-                        sexo[0] = toupper(sexo[0]);
+    printf("\n\nDigite o ID a ser editado: ");
+    scanf("%d", &noID);
 
-                        while (validarSexo(sexo) != 0) {
-                            printf("Tente novamente: ");
-                            scanf(" %[^\n]", sexo);
-                            sexo[0] = toupper(sexo[0]);
-                        }
+    while (noAtual != NULL) {
+        if (noAtual->ID == noID) {
+            printf("Escolha o atributo que deseja editar:\n");
+            printf("1 - Nome\n");
+            printf("2 - Email\n");
+            printf("3 - Sexo\n");
+            printf("4 - Endereco\n");
+            printf("5 - Altura\n");
+            printf("6 - Vacinado\n");
+            printf("Digite a opcao: ");
+            scanf("%d", &atributo);
 
-                        strcpy(bufferNo->sexo, sexo);
-                        break;
-                    case 3:
-                        printf("Digite o novo endereco: ");
-                        scanf(" %[^\n]", bufferNo->endereco);
-                        break;
-                    case 4:
-                        double altura;
-                        printf("Digite a nova altura: ");
-                        scanf("%lf", &altura);
+            switch (atributo) {
+                case 1:
+                    printf("Digite o novo nome: ");
+                    scanf(" %[^\n]", novoNome);
+                    strcpy(noAtual->nome, novoNome);
+                    break;
+                case 2:
+                    printf("Digite o novo email: ");
+                    scanf(" %[^\n]", novoEmail);
 
-                        while (validarAltura(altura) != 0) {
-                            printf("Tente novamente: ");
-                            scanf("%lf", &altura);
-                        }
-                        break;
-                    case 5:
-                        int vacinado;
-                        printf("Digite o novo status de vacinacao: ");
-                        scanf("%d", &vacinado);
+                    while (validarEmail(novoEmail) != 0) {
+                        printf("Tente novamente, faltou o @: ");
+                        scanf(" %[^\n]", novoEmail);
+                    }
 
-                        while (validarVacinado(vacinado) != 0) {
-                            printf("Tente novamente: ");
-                            scanf("%d", &vacinado);
-                        };
-                        break;
-                    case 0:
-                        return;
-                    default:
-                        printf("Valor inválido\n");
-                        break;
-                }
-            } while (opcao != 0);
-        } else {
-            bufferNo = bufferNo->Prox;
+                    strcpy(noAtual->email, novoEmail);
+                    break;
+                case 3:
+                    printf("Digite o novo sexo (Masculino, Feminino ou Indiferente): ");
+                    scanf(" %[^\n]", novoSexo);
+                    novoSexo[0] = toupper(novoSexo[0]);
+
+                    while (validarSexo(novoSexo) != 0) {
+                        printf("Tente novamente: ");
+                        scanf(" %[^\n]", novoSexo);
+                        novoSexo[0] = toupper(novoSexo[0]);
+                    }
+
+                    strcpy(noAtual->sexo, novoSexo);
+                    break;
+                case 4:
+                    printf("Digite o novo endereco: ");
+                    scanf(" %[^\n]", novoEndereco);
+                    strcpy(noAtual->endereco, novoEndereco);
+                    break;
+                case 5:
+                    printf("Digite a nova altura (Entre 1.0 e 2.0): ");
+                    scanf("%lf", &novaAltura);
+
+                    while (validarAltura(novaAltura) != 0) {
+                        printf("Tente novamente: ");
+                        scanf("%lf", &novaAltura);
+                    }
+
+                    noAtual->altura = novaAltura;
+                    break;
+                case 6:
+                    printf("Digite o novo status de vacinacao (1 para sim, 0 para nao): ");
+                    scanf("%d", &novoVacinado);
+
+                    while (validarVacinado(novoVacinado) != 0) {
+                        printf("Tente novamente: ");
+                        scanf("%d", &novoVacinado);
+                    }
+
+                    noAtual->vacinado = novoVacinado;
+                    break;
+                default:
+                    printf("Atributo invalido\n");
+                    break;
+            }
+            break;
         }
+        noAtual = noAtual->Prox;
+    }
+
+    if (noAtual == NULL) {
+        printf("ID especificado nao encontrado.\n");
     }
 }
+
 void excluirNo() {
-    Nos* temp = noInicial;
-    Nos* prev = NULL;
-    char email[100];
+    int noID;
+    Nos* noAtual = noInicial;
+    Nos* noAnterior = NULL;
 
-    printf("Digite o email do usuario que voce quer excluir: ");
-    scanf(" %[^\n]", email);
+    printf("Digite o ID a ser excluido: ");
+    scanf("%d", &noID);
 
-    if (temp != NULL && strcmp(temp->email, email) == 0) {
-        noInicial = temp->Prox;
-        free(temp);
-        printf("No inicial excluído com sucesso\n");
-        return;
+    while (noAtual != NULL) {
+        if (noAtual->ID == noID) {
+            if (noAnterior == NULL) {
+                noInicial = noAtual->Prox;
+            } else {
+                noAnterior->Prox = noAtual->Prox;
+            }
+            free(noAtual);
+            contadorNos--;
+            printf("Usuario excluido com sucesso.\n");
+            return;
+        }
+        noAnterior = noAtual;
+        noAtual = noAtual->Prox;
     }
 
-    while (temp != NULL && strcmp(temp->email, email) != 0) {
-        prev = temp;
-        temp = temp->Prox;
-    }
-
-    if (temp == NULL)
-        return;
-
-    prev->Prox = temp->Prox;
-
-    free(temp);
-    printf("No excluído com sucesso\n");
+    printf("Usuario com o ID especificado nao encontrado.\n");
 }
+
 void listarDados() {
-    Nos* bufferNo = noInicial;
-    int contador = 1;
+    Nos* noAtual = noInicial;
 
-    if (bufferNo == NULL) {
-        printf("A lista está vazia\n");
+    if (noAtual == NULL) {
+        printf("Nenhum usuario cadastrado.\n");
         return;
-    } else {
+    }
 
-        while (bufferNo != NULL) {
-            printf("-----------No %d-----------\n", contador);
-            printf("ID: %d \n", bufferNo->ID);
-            printf("Nome: %s\n", bufferNo->nome);
-            printf("Email: %s\n", bufferNo->email);
-            printf("Sexo: %s\n", bufferNo->sexo);
-            printf("Endereco: %s\n", bufferNo->endereco);
-            printf("Altura: %.2f\n", bufferNo->altura);
-            printf("Status de vacinacao: %d\n", bufferNo->vacinado);
-            contador++;
-            bufferNo = bufferNo->Prox;
+    while (noAtual != NULL) {
+        printf("ID: %d\n", noAtual->ID);
+        printf("Nome: %s\n", noAtual->nome);
+        printf("Email: %s\n", noAtual->email);
+        printf("Sexo: %s\n", noAtual->sexo);
+        printf("Endereco: %s\n", noAtual->endereco);
+        printf("Altura: %.2lf\n", noAtual->altura);
+        printf("Vacinado: %d\n", noAtual->vacinado);
+        printf("-----------------------------------------\n");
+        noAtual = noAtual->Prox;
+    }
+
+    printf("Total de cadastrados: %d\n", contadorNos);
+}
+
+int gerarID() {
+    static int ID = 1;
+    return ID++;
+}
+
+int validarEmail(const char email[]) {
+    int i, at = 0, dot = 0;
+
+    for (i = 0; email[i] != '\0'; i++) {
+        if (email[i] == '@') {
+            at++;
+        } else if (email[i] == '.') {
+            dot++;
         }
     }
+
+    if (at == 1 && dot >= 1) {
+        return 0;  // Email válido
+    } else {
+        return 1;  // Email inválido
+    }
 }
 
+int validarSexo(const char sexo[]) {
+    if (strcmp(sexo, "Masculino") == 0 || strcmp(sexo, "Feminino") == 0 || strcmp(sexo, "Indiferente") == 0) {
+        return 0;  // Sexo válido
+    } else {
+        return 1;  // Sexo inválido
+    }
+}
 
+int validarAltura(double altura) {
+    if (altura >= 1.0 && altura <= 2.0) {
+        return 0;  // Altura válida
+    } else {
+        return 1;  // Altura inválida
+    }
+}
+
+int validarVacinado(int vacinado) {
+    if (vacinado == 0 || vacinado == 1) {
+        return 0;  // Status de vacinação válido
+    } else {
+        return 1;  // Status de vacinação inválido
+    }
+}
