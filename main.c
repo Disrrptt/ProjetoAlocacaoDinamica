@@ -32,12 +32,12 @@ int main() {
 
     do {
         printf("-----------------------------------------\n");
-        printf("1 - Criar/Adicionar Nós à lista\n");
-        printf("2 - Editar dados do Nó\n");
-        printf("3 - Excluir Nó\n");
+        printf("1 - Criar/Adicionar Nos a lista\n");
+        printf("2 - Editar dados do No\n");
+        printf("3 - Excluir No\n");
         printf("4 - Listar dados da Lista\n");
         printf("0 - Sair do algoritmo\n");
-        printf("Digite a opção: ");
+        printf("Digite a opcao: ");
         scanf("%d", &opcao);
         switch (opcao) {
             case 1:
@@ -56,7 +56,7 @@ int main() {
                 printf("------------Fechando programa------------");
                 break;
             default:
-                printf("Valor inválido\n");
+                printf("Valor invalido\n");
                 break;
         }
     } while (opcao != 0);
@@ -70,7 +70,7 @@ void adicionarNo() {
     char nomeNo[100], emailNo[100], sexoNo[20], enderecoNo[100];
     double alturaNo;
 
-    printf("Digite os dados do nó na linha abaixo\n");
+    printf("Digite os dados do no na linha abaixo\n");
     printf("Digite o seu nome completo: ");
     scanf(" %[^\n]", nomeNo);
     printf("Digite o seu email: ");
@@ -130,4 +130,84 @@ void adicionarNo() {
         printf("Novo no adicionado a lista de nos com sucesso\n");
     }
 }
+void editarNo() {
+    char email[100];
+    int encontrado = 0;
+    Nos* bufferNo = noInicial;
+
+    while (encontrado != 1) {
+        printf("Digite o email do no que deseja editar: ");
+        scanf(" %[^\n]", email);
+        if (bufferNo == NULL) {
+            printf("A lista esta vazia\n");
+            return;
+        } else if (strcmp(bufferNo->email, email) == 0) {
+            int opcao;
+            encontrado = 1;
+            do {
+                printf("1 - Editar seu nome\n");
+                printf("2 - Editar seu sexo\n");
+                printf("3 - Editar seu endereco\n");
+                printf("4 - Editar sua altura\n");
+                printf("5 - Editar status de vacinacao\n");
+                printf("0 - Fechar a edicao\n");
+                printf("Opcao escolhida: ");
+                scanf("%d", &opcao);
+
+                switch (opcao) {
+                    case 1:
+                        printf("Digite o novo nome desejado: ");
+                        scanf(" %[^\n]", bufferNo->nome);
+                        break;
+                    case 2:
+                        char sexo[20];
+                        printf("Digite o novo sexo desejado: ");
+                        scanf(" %[^\n]", sexo);
+                        sexo[0] = toupper(sexo[0]);
+
+                        while (validarSexo(sexo) != 0) {
+                            printf("Tente novamente: ");
+                            scanf(" %[^\n]", sexo);
+                            sexo[0] = toupper(sexo[0]);
+                        }
+
+                        strcpy(bufferNo->sexo, sexo);
+                        break;
+                    case 3:
+                        printf("Digite o novo endereco: ");
+                        scanf(" %[^\n]", bufferNo->endereco);
+                        break;
+                    case 4:
+                        double altura;
+                        printf("Digite a nova altura: ");
+                        scanf("%lf", &altura);
+
+                        while (validarAltura(altura) != 0) {
+                            printf("Tente novamente: ");
+                            scanf("%lf", &altura);
+                        }
+                        break;
+                    case 5:
+                        int vacinado;
+                        printf("Digite o novo status de vacinacao: ");
+                        scanf("%d", &vacinado);
+
+                        while (validarVacinado(vacinado) != 0) {
+                            printf("Tente novamente: ");
+                            scanf("%d", &vacinado);
+                        };
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        printf("Valor inválido\n");
+                        break;
+                }
+            } while (opcao != 0);
+        } else {
+            bufferNo = bufferNo->Prox;
+        }
+    }
+}
+
 
