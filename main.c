@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <ctype.h>
+#include <stdio.h> //entrada e saída de dados
+#include <stdlib.h> //alocação dinâmica de memória
+#include <time.h> //informações de data e hora
+#include <string.h> //Copiar, concatenar e calcular o tamanho de strings
+#include <ctype.h> //Manipulação de caracteres
 
 typedef struct Nos {
     int ID;
