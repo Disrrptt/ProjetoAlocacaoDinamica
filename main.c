@@ -209,5 +209,33 @@ void editarNo() {
         }
     }
 }
+void excluirNo() {
+    Nos* temp = noInicial;
+    Nos* prev = NULL;
+    char email[100];
+
+    printf("Digite o email do usuario que voce quer excluir: ");
+    scanf(" %[^\n]", email);
+
+    if (temp != NULL && strcmp(temp->email, email) == 0) {
+        noInicial = temp->Prox;
+        free(temp);
+        printf("No inicial excluído com sucesso\n");
+        return;
+    }
+
+    while (temp != NULL && strcmp(temp->email, email) != 0) {
+        prev = temp;
+        temp = temp->Prox;
+    }
+
+    if (temp == NULL)
+        return;
+
+    prev->Prox = temp->Prox;
+
+    free(temp);
+    printf("No excluído com sucesso\n");
+}
 
 
